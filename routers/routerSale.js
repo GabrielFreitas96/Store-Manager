@@ -1,5 +1,5 @@
 const routerSales = require('express').Router();
-const saleController = require('../controllers/saleControler');
+const saleController = require('../controllers/saleController');
 
 routerSales.use('/:id', saleController.getSalesById);
 routerSales.use('/', saleController.getSales);
