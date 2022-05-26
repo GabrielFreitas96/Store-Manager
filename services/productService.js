@@ -5,5 +5,10 @@ const getAll = async () => {
   return response;
 };
 
-const productService = { getAll };
+const getById = async (id) => {
+  const response = await productModel.getById(id);
+  return response;
+};
+
+const productService = { getAll, getById };
 module.exports = productService;
