@@ -1,7 +1,7 @@
 const app = require('./app');
 require('dotenv').config();
 const routerProduct = require('./routers/routerProduct');
-
+const routerSale = require('./routers/routerSale');
 // não altere esse arquivo, essa estrutura é necessária para à avaliação do projeto
 app.get('/lalalala', (req, res) => {
   console.log('rodando lalalala');
@@ -9,6 +9,7 @@ app.get('/lalalala', (req, res) => {
 });
 
 app.use('/products', routerProduct);
+app.use('/sales', routerSale);
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
 });
