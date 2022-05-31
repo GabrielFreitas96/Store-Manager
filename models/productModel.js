@@ -26,6 +26,12 @@ const getByName = async (name) => {
   return result[0];
 };
 
-const productModel = { getAll, getById, addProduct, getByName };
+const editProduct = async (id, name, quantity) => {
+  const query = 'UPDATE StoreManager.products set name = ?,quantity = ? WHERE id = ?';
+  const [result] = await connection.execute(query, [name, quantity, id]);
+  console.log('result no service', result);
+  return result;
+};
+const productModel = { getAll, getById, addProduct, getByName, editProduct };
 
 module.exports = productModel;
