@@ -27,8 +27,6 @@ const addProduct = async (req, res) => {
 const editProduct = async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
-  console.log('id no Controller', id);
-  console.log('name e quantity no controller', name, quantity);
   const productEdited = await productService.editProduct(id, name, quantity);
   if (!productEdited) {
     return res.status(404).json({ message: 'Product not found' });

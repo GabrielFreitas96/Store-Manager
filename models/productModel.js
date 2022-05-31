@@ -22,21 +22,18 @@ const addProduct = async (name, quantity) => {
 const getByName = async (name) => {
   const query = 'Select * FROM StoreManager.products WHERE name = ? ';
   const [result] = await connection.execute(query, [name]);
-  // console.log('getByName no model', result);
   return result[0];
 };
 
 const editProduct = async (id, name, quantity) => {
   const query = 'UPDATE StoreManager.products set name = ?,quantity = ? WHERE id = ?';
   const [result] = await connection.execute(query, [name, quantity, id]);
-  console.log('result no service', result);
   return result;
 };
 
 const deleteProduct = async (id) => {
   const query = 'DELETE FROM StoreManager.products WHERE id=?';
   const [result] = await connection.execute(query, [id]);
-  console.log('result no service delete', result);
   return result;
 };
 
