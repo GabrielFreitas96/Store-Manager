@@ -4,6 +4,6 @@ const verifyProduct = require('../middlewares/verifyProduct');
 
 routerProduct.get('/:id', productController.getProductsById);
 routerProduct.get('/', productController.getProducts);
-routerProduct.post('/', verifyProduct);
+routerProduct.post('/', verifyProduct, productController.addProduct);
 
 module.exports = routerProduct;
