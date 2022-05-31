@@ -4,6 +4,6 @@ const { verifySale } = require('../middlewares/verifySale');
 
 routerSales.get('/:id', saleController.getSalesById);
 routerSales.get('/', saleController.getSales);
-routerSales.post('/', verifySale);
+routerSales.post('/', verifySale, saleController.addSale);
 
 module.exports = routerSales;
