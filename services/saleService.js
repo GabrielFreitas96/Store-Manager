@@ -10,6 +10,11 @@ const getById = async (id) => {
   return response;
 };
 
-const saleService = { getAll, getById };
+const addSale = async (arrayNewSales) => {
+const response = await saleModel.addSale(arrayNewSales);
+return response;
+};
+
+const saleService = { getAll, getById, addSale };
 
 module.exports = saleService;
