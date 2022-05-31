@@ -21,5 +21,14 @@ const addProduct = async (name, quantity) => {
   return responseId; 
 };
 
-const productService = { getAll, getById, addProduct };
+const editProduct = async (id, name, quantity) => {
+ const productToBeEdit = await productModel.getById(id);
+ if (productToBeEdit.length === 0) {
+   return null;
+ }
+ const productEdited = await productModel.editProduct(id, name, quantity);
+ return productEdited;
+};
+
+const productService = { getAll, getById, addProduct, editProduct };
 module.exports = productService;
