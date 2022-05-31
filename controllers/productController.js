@@ -24,5 +24,17 @@ const addProduct = async (req, res) => {
   res.status(201).json({ id: productId, name, quantity });
 };
 
-const productController = { getProducts, getProductsById, addProduct };
+const editProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  console.log('id no Controller', id);
+  console.log('name e quantity no controller', name, quantity);
+  const productEdited = await productService.editProduct(id, name, quantity);
+  if (!productEdited) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+  res.status(200).json({ id, name, quantity });
+};
+
+const productController = { getProducts, getProductsById, addProduct, editProduct };
 module.exports = productController;
