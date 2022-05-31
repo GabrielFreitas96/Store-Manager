@@ -32,6 +32,14 @@ const editProduct = async (id, name, quantity) => {
   console.log('result no service', result);
   return result;
 };
-const productModel = { getAll, getById, addProduct, getByName, editProduct };
+
+const deleteProduct = async (id) => {
+  const query = 'DELETE FROM StoreManager.products WHERE id=?';
+  const [result] = await connection.execute(query, [id]);
+  console.log('result no service delete', result);
+  return result;
+};
+
+const productModel = { getAll, getById, addProduct, getByName, editProduct, deleteProduct };
 
 module.exports = productModel;
