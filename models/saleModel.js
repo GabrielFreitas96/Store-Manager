@@ -21,7 +21,21 @@ const getById = async (id) => {
   const [result] = await connection.execute(query, [id]);
   return serializeId(result);
 };
+const addSale = async (arrayNewSales) => {
+  const queryNewSale = `INSERT INTO StoreManager.sales (date)
+    VALUES (NOW())`;
+    const [{ insertId }] = await connection.execute(queryNewSale);
+    console.log('insert id', insertId);
+  arrayNewSales.forEach(async ({ productId, quantity }) => {
+    const queryNewSaleProduct = `INSERT INTO StoreManager.sales_products 
+    (sale_id, product_id, quantity)
+    VALUES (?, ?, ?)`;
+    await connection.execute(queryNewSaleProduct, [insertId, productId, quantity]);
+  });
+  const objectSales = { id: insertId, itemsSold: [...arrayNewSales] };
+  return objectSales;
+};
 
-const saleModel = { getAll, getById };
+const saleModel = { getAll, getById, addSale };
 
 module.exports = saleModel;
