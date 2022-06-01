@@ -11,10 +11,15 @@ const getById = async (id) => {
 };
 
 const addSale = async (arrayNewSales) => {
-const response = await saleModel.addSale(arrayNewSales);
-return response;
+  const response = await saleModel.addSale(arrayNewSales);
+  return response;
 };
 
-const saleService = { getAll, getById, addSale };
+const editSale = async (id, arrayEditSales) => {
+  const response = await saleModel.editSale(id, arrayEditSales);
+  return response;
+};
+
+const saleService = { getAll, getById, addSale, editSale };
 
 module.exports = saleService;
