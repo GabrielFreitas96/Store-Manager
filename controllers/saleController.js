@@ -20,6 +20,13 @@ const addSale = async (req, res) => {
   res.status(201).json(newSales);
 };
 
-const saleController = { getSales, getSalesById, addSale };
+const editSale = async (req, res) => {
+  const { id } = req.params;
+  const arrayEditSales = req.body;
+  const editSales = await saleService.editSale(id, arrayEditSales);
+  res.status(200).json(editSales);
+};
+
+const saleController = { getSales, getSalesById, addSale, editSale };
 
 module.exports = saleController;
