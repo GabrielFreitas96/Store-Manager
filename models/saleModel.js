@@ -36,6 +36,16 @@ const addSale = async (arrayNewSales) => {
   return objectSales;
 };
 
-const saleModel = { getAll, getById, addSale };
+const editSale = async (id, arrayNewSales) => {
+  arrayNewSales.forEach(async ({ productId, quantity }) => {
+    const queryEditSale = `UPDATE StoreManager.sales_products 
+  set quantity = ? WHERE sale_id = ? AND product_id = ?`;
+    await connection.execute(queryEditSale, [quantity, id, productId]);
+  });
+  const salesUpdated = { saleId: id, itemUpdated: [...arrayNewSales] };
+  return salesUpdated; 
+};
+
+const saleModel = { getAll, getById, addSale, editSale };
 
 module.exports = saleModel;
