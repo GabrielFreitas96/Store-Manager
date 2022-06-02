@@ -4,7 +4,7 @@ const connection = require('../../../models/connection');
 const productModel = require('../../../models/productModel');
 
 describe('Busca todos os produtos no Banco de Dados getAll()', () => {
-  describe('Quando todos os filmes são encontrados', () => {
+  describe('Quando todos os produtos são encontrados', () => {
     const payloadProducts = [[
       {
         id: 1,
