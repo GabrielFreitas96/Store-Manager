@@ -105,3 +105,18 @@ describe('Busca um determinado produto por Id', () => {
     });
   });
 });
+
+describe('Adiciona um produto ao BD', () => {
+  describe('Quando o produto é adicionado com sucesso', () => {
+    const idinsert = [{ insertId: 1 }];
+    before( async () => {
+      sinon.stub(connection, 'execute').resolves(idinsert);
+    });
+    after( () => { connection.execute.restore(); });
+    it('Quando o produto é adicionado com sucesso', async () => {
+      const response = await productModel.addProduct();
+      console.log('response', response);
+      expect(response).to.be.an('number');
+    });
+  });
+});
