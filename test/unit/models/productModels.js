@@ -67,3 +67,41 @@ describe('Busca todos os produtos no Banco de Dados getAll()', () => {
 
 });
 
+describe('Busca um determinado produto por Id', () => {
+  describe('Quando o produto é encontrado atraves do id inserido', () => {
+    const productOne = [[{
+        id: 1,
+        name: "Martelo de Thor",
+        quantity: 10,
+      }]];
+    before( async ()=> {
+      sinon.stub(connection, 'execute').resolves(productOne);
+    });
+    after(() => {
+      connection.execute.restore();
+    });
+    it('Espera que seja um array não vazio  ', async () => {
+      const response = await productModel.getById();
+      expect(response).to.be.a('array');
+      expect(response).to.be.deep.equal(productOne[0]);
+    });
+    it('Espera que seja um objeto com id, name, quantity ', async () => {
+      const response = await productModel.getById();
+      expect(response[0]).to.include.all.keys('id','name','quantity');
+    });
+  });
+  describe('Quando o produto não é encontrado atraves do id inserido', () => {
+    const productOne = [[]];
+    before( async ()=> {
+      sinon.stub(connection, 'execute').resolves(productOne);
+    });
+    after(() => {
+      connection.execute.restore();
+    });
+    it('Espera que seja um array vazio  ', async () => {
+      const response = await productModel.getById();
+      expect(response).to.be.a('array');
+      expect(response).to.be.empty;
+    });
+  });
+});
