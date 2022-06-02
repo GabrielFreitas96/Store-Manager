@@ -4,7 +4,7 @@ const connection = require('../../../models/connection');
 const saleModel = require('../../../models/saleModel');
 const saleService = require('../../../services/saleService');
 
-describe.only('Busca todos as vendas no Banco de Dados', () => {
+describe('Busca todos as vendas no Banco de Dados', () => {
   describe('Quando todas as vendas são encontradas', () => {
     const payloadSales = [
       {
