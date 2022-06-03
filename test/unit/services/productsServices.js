@@ -116,3 +116,36 @@ describe('Busca um determinado produto no banco de dados com base no ID', () => 
 
   });
 });
+
+describe('Quando se adiciona um produto no BD', () => {
+  describe('Quando o produto é adicionado com sucesso ao BD', () => {
+    const modelAdd = 1;
+    before( async () => {
+      sinon.stub( productModel, 'addProduct').resolves(modelAdd);
+      sinon.stub( productModel, 'getByName').resolves(null);
+    });
+    after( () => { 
+      productModel.addProduct.restore();
+      productModel.getByName.restore();
+     });
+    it('Espera que o retorno seja um number', async () => {
+      const response = await productService.addProduct();
+        console.log('response', response);
+        expect(response).to.be.an('number');
+    });
+  });
+  describe('Quando o produto já existe no BD', () => {
+    const modelname = {name: 'aaaa'};
+    const nameAdd = 'aaaa';
+    before( async () => {
+      // sinon.stub( productModel, 'addProduct').resolves(modelAdd);
+      sinon.stub( productModel, 'getByName').resolves(modelname);
+    });
+    after( () => { productModel.getByName.restore(); });
+    it('Espera que o retorno seja nulo', async () => {
+      const response = await productService.addProduct(nameAdd);
+        console.log('response', response);
+        expect(response).to.be.null;
+    });
+  });
+});
