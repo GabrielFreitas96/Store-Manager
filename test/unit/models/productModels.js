@@ -120,3 +120,106 @@ describe('Adiciona um produto ao BD', () => {
     });
   });
 });
+
+describe('Busca um produto pelo nome no BD', () => {
+  describe('Quando o produto buscado pelo nome é encontrado', () => {
+    const nameSearch = [[{ name: 'Martelo de Thor'}]];
+    before(async () => {
+      sinon.stub(connection, 'execute').resolves(nameSearch);
+    });
+    after(() => { connection.execute.restore(); })
+    it('Espera que o retorno seja um objeto', async () => {
+      const response = await productModel.getByName();
+      expect(response).to.be.an('object');
+    });
+    it('Espera que o retorno seja o item esperado', async () => {
+      const response = await productModel.getByName();
+      expect(response).to.be.deep.equal(nameSearch[0][0]);
+    });
+  });
+  describe('Quando o produto buscado pelo nome não é encontrado', () => {
+    const noNameSearch = [[[]],''];
+    before(async () => {
+      sinon.stub(connection, 'execute').resolves(noNameSearch);
+    });
+    after(() => { connection.execute.restore(); })
+    it('Espera que o retorno seja um array', async () => {
+      const response = await productModel.getByName();
+      expect(response).to.be.an('array');
+    });
+    it('Espera que o retorno seja um array vazio', async () => {
+      const response = await productModel.getByName();
+      expect(response).to.be.empty;
+    });
+  });
+});
+
+describe('Edita um produto no banco de Dados', () => {
+  describe('Produto Editado com Sucesso', () => {
+    const resultEdit = [{ affectedRows: 1 }];
+    before( async () => {
+      sinon.stub(connection, 'execute').resolves(resultEdit);
+    });
+    after( () => { connection.execute.restore(); });
+    it('Espera que o retorno seja um objeto', async () => {
+      const response = await productModel.editProduct();
+      expect(response).to.be.an('object');
+    });
+    it('Espera que o retorno seja um objeto com a chhave affect Rows', async () => {
+      const response = await productModel.editProduct();
+      expect(response).to.have.key('affectedRows');
+      expect(response.affectedRows).to.be.equal(1);
+    });
+  });
+  describe('Quando o Produto não é Editado com Sucesso', () => {
+    const resultEdit = [{ affectedRows: 0 }];
+    before( async () => {
+      sinon.stub(connection, 'execute').resolves(resultEdit);
+    });
+    after( () => { connection.execute.restore(); });
+    it('Espera que o retorno seja um objeto', async () => {
+      const response = await productModel.editProduct();
+      expect(response).to.be.an('object');
+    });
+    it('Espera que o retorno seja um objeto com a chave affectRows', async () => {
+      const response = await productModel.editProduct();
+      expect(response).to.have.key('affectedRows');
+      expect(response.affectedRows).to.be.equal(0);
+    });
+  });
+});
+
+describe('Deleta um produto do banco de Dados', () => {
+  describe('Produto deletado com Sucesso', () => {
+    const resultDelete = [{ affectedRows: 1 }];
+    before( async () => {
+      sinon.stub(connection, 'execute').resolves(resultDelete);
+    });
+    after( () => { connection.execute.restore(); });
+    it('Espera que o retorno seja um objeto', async () => {
+      const response = await productModel.deleteProduct();
+      expect(response).to.be.an('object');
+    });
+    it('Espera que o retorno seja um objeto com a chave affectRows', async () => {
+      const response = await productModel.deleteProduct();
+      expect(response).to.have.key('affectedRows');
+      expect(response.affectedRows).to.be.equal(1);
+    });
+  });
+  describe('Quando o Produto não é deletado com Sucesso', () => {
+    const resultDelete = [{ affectedRows: 0 }];
+    before( async () => {
+      sinon.stub(connection, 'execute').resolves(resultDelete);
+    });
+    after( () => { connection.execute.restore(); });
+    it('Espera que o retorno seja um objeto', async () => {
+      const response = await productModel.deleteProduct();
+      expect(response).to.be.an('object');
+    });
+    it('Espera que o retorno seja um objeto com a chhave affect Rows', async () => {
+      const response = await productModel.deleteProduct();
+      expect(response).to.have.key('affectedRows');
+      expect(response.affectedRows).to.be.equal(0);
+    });
+  });
+});
