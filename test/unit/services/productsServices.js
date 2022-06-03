@@ -58,14 +58,61 @@ describe('Busca todos os produtos no Banco de Dados ', ()=> {
     });
 
     it('Espera o retorno ser um array', async () => {
-      const response = await productModel.getAll();
+      const response = await productService.getAll();
       expect(response).to.be.an('array');
     });
     it('Espera que o array esteja vazio', async () => {
-      const response = await productModel.getAll();
+      const response = await productService.getAll();
       expect(response).to.be.empty;
     });
 
   });
 
+});
+
+describe('Busca um determinado produto no banco de dados com base no ID', () => {
+  describe('Quando o id inserido retorna um produto', () => {
+    const productId = [{
+      id: 1,
+      name: "Martelo de Thor",
+      quantity: 10,
+    }];
+    before( async () => {
+      sinon.stub(productModel, 'getById').resolves(productId);
+    }); 
+    after(() => {
+      productModel.getById.restore();
+    });
+    it('Espera que o produto encontrado seja um array', async () => {
+      const response = await productService.getById();
+      expect(response).to.be.an('array');
+      expect(response).to.be.not.empty;
+    });
+    it('Espera que o produto tenha as chaves "id", "name", "quantity"', async () => {
+      const response = await productService.getById();
+      expect(response).to.be.deep.equal(productId);
+      expect(response[0]).to.include.all.keys('id','name','quantity');
+    });
+
+  });
+  
+  describe('Quando o id inserido não retorna um produto', () => {
+    before( async () => {
+      const resultProducts = [];
+      sinon.stub(productModel, 'getById').resolves(resultProducts);
+    }); 
+    after(() => {
+      productModel.getById.restore();
+    });
+
+    it('Espera o retorno ser um array', async () => {
+      const response = await productService.getById();
+      expect(response).to.be.an('array');
+    });
+    it('Espera que o array esteja vazio', async () => {
+      const response = await productService.getById();
+      expect(response).to.be.empty;
+    });
+
+  });
 });
