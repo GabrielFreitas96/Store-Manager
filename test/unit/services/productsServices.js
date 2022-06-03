@@ -149,3 +149,75 @@ describe('Quando se adiciona um produto no BD', () => {
     });
   });
 });
+describe('Quando se edita um produto no BD', () => {
+  describe('Quando esse produto não existe no BD, não se pode editar', () => {
+    const modelById = [];
+    before( async () => {
+      sinon.stub(productModel, 'getById').resolves(modelById);
+    });
+    after( () => { productModel.getById.restore(); });
+    it('Espera que o retorno seja null', async () => {
+      const response = await productService.editProduct();
+      expect(response).to.be.null;
+    });
+
+  });
+  describe('Quando esse produto existe no BD e pode ser editado', () => {
+    const modelById = ['',''];
+    const modelEdit = [{ affectedRows: 1 }]
+    before( async () => {
+      sinon.stub(productModel, 'getById').resolves(modelById);
+      sinon.stub(productModel, 'editProduct').resolves(modelEdit);
+    });
+    after( () => { 
+      productModel.getById.restore();
+      productModel.editProduct.restore(); 
+    });
+    it('Espera que o retorno seja um array', async () => {
+      const response = await productService.editProduct();
+      expect(response).to.be.an('array');
+    });
+    it('Espera que o o array tenha um objeto com a chave a affect Rows', async () => {
+      const response = await productService.editProduct();
+      expect(response[0]).to.be.an('object');
+      expect(response[0]).to.have.key('affectedRows');
+      expect(response[0].affectedRows).to.be.equal(1);
+    });
+  });
+});
+describe('Quando se deleta um produto no BD', () => {
+  describe('Quando esse produto não existe no BD, não se pode deletar', () => {
+    const modelById = [];
+    before( async () => {
+      sinon.stub(productModel, 'getById').resolves(modelById);
+    });
+    after( () => { productModel.getById.restore(); });
+    it('Espera que o retorno seja null', async () => {
+      const response = await productService.deleteProduct();
+      expect(response).to.be.null;
+    });
+
+  });
+  describe('Quando esse produto existe no BD e pode ser deletado', () => {
+    const modelById = ['',''];
+    const modelDelete = [{ affectedRows: 1 }]
+    before( async () => {
+      sinon.stub(productModel, 'getById').resolves(modelById);
+      sinon.stub(productModel, 'deleteProduct').resolves(modelDelete);
+    });
+    after( () => { 
+      productModel.getById.restore();
+      productModel.deleteProduct.restore(); 
+    });
+    it('Espera que o retorno seja um array', async () => {
+      const response = await productService.deleteProduct();
+      expect(response).to.be.an('array');
+    });
+    it('Espera que o o array tenha um objeto com a chave a affect Rows', async () => {
+      const response = await productService.deleteProduct();
+      expect(response[0]).to.be.an('object');
+      expect(response[0]).to.have.key('affectedRows');
+      expect(response[0].affectedRows).to.be.equal(1);
+    });
+  });
+});
