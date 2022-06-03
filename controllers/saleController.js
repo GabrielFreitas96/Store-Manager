@@ -31,7 +31,7 @@ const deleteSale = async (req, res) => {
   const { id } = req.params;
   const deletedSales = await saleService.deleteSale(+id);
   if (!deletedSales) {
-    return res.status(404).json({ message: 'Sale not founs' });
+    return res.status(404).json({ message: 'Sale not found' });
   }
   res.status(204).json();
 };
