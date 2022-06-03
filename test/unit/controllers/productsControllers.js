@@ -73,6 +73,29 @@ describe('Ao chamar o contoller pelo getProductsById', () => {
       expect(response.json.calledWith(messageJson)).to.be.true;
     });
   });
+  describe('Quando existe o produto cadastrado procurado pelo id', () => {
+    const request = { params: { id: 2} };
+    const response = {};
+    const productId = [{id: 2,
+    name: "Traje de encolhimento",
+    quantity: 20
+    }];
+    const messageJson = productId[0];
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns(messageJson);
+
+      sinon.stub(productService, 'getById').resolves(productId);
+    });
+    after(() => {
+      productService.getById.restore();
+    });
+    it('Retorna um objeto com os métodos "status" e "json" ao receber um array com o produto procurado', async () => {
+      await productController.getProductsById(request, response);
+      expect(response.status.calledWith(200)).to.be.true;
+      expect(response.json.calledWith(messageJson)).to.be.true;
+    });
+  });
 
 });
 
@@ -160,6 +183,47 @@ describe('Ao chamar o contoller pelo editProduct', () => {
       await productController.editProduct(request, response);
       expect(response.status.calledWith(200)).to.be.true;
       expect(response.json.calledWith(messageJson)).to.be.true;
+    });
+  });
+});
+
+describe('Ao chamar o contoller pelo deleteProduct', () => {
+  describe('Quando o produto a ser deletado não existe', () => {
+    const request = { params: { id: 10}, body: { name:'aaaaa', quantity:10 }};
+    const response = {};
+
+    const messageJson = { message: 'Product not found'};
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns(messageJson);
+
+      sinon.stub(productService, 'deleteProduct').resolves(null);
+    });
+    after(() => {
+      productService.deleteProduct.restore();
+    });
+    it('Retorna um objeto com os métodos "status" e "json" ao receber null', async () => {
+      await productController.deleteProduct(request, response);
+      expect(response.status.calledWith(404)).to.be.true;
+      expect(response.json.calledWith(messageJson)).to.be.true;
+    });
+  });
+  describe('Quando o produto se encontra cadastrado e pode ser deletado', () => {
+    const request = {  params: { id: 1}};
+    const response = {};
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns();
+
+      sinon.stub(productService, 'deleteProduct').resolves([]);
+    });
+    after(() => {
+      productService.deleteProduct.restore();
+    });
+    it('Retorna um objeto com os métodos "status" e "json" ao receber um id para ser deletado', async () => {
+      await productController.deleteProduct(request, response);
+      expect(response.status.calledWith(204)).to.be.true;
+      expect(response.json.calledWith()).to.be.true;
     });
   });
 });
