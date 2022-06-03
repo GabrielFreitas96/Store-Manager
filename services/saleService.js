@@ -19,7 +19,14 @@ const editSale = async (id, arrayEditSales) => {
   const response = await saleModel.editSale(id, arrayEditSales);
   return response;
 };
-
-const saleService = { getAll, getById, addSale, editSale };
+const deleteSale = async (id) => {
+  const saleToBeDelete = await saleModel.getById(id);
+  if (saleToBeDelete.length === 0) {
+    return null;
+  }
+  const saleDeleted = await saleModel.deleteSale(id);
+  return saleDeleted;
+};
+const saleService = { getAll, getById, addSale, editSale, deleteSale };
 
 module.exports = saleService;
