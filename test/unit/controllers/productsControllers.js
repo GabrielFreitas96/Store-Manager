@@ -76,7 +76,7 @@ describe('Ao chamar o contoller pelo getProductsById', () => {
 
 });
 
-describe.only('Ao chamar o contoller pelo addProduct', () => {
+describe('Ao chamar o contoller pelo addProduct', () => {
   describe('Quando o produto já se encontra cadastrado', () => {
     const request = { body: { name:'aaaaa', quantity:10 }};
     const response = {};
