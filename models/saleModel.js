@@ -46,6 +46,13 @@ const editSale = async (id, arrayNewSales) => {
   return salesUpdated; 
 };
 
-const saleModel = { getAll, getById, addSale, editSale };
+const deleteSale = async (id) => {
+  const query = 'DELETE FROM StoreManager.sales WHERE id=?';
+  const [result] = await connection.execute(query, [id]);
+  console.log('result no delete sales', result);
+  return result;
+};
+
+const saleModel = { getAll, getById, addSale, editSale, deleteSale };
 
 module.exports = saleModel;
