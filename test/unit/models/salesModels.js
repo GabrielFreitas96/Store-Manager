@@ -148,3 +148,57 @@ describe('Busca as sales pelo Id', () => {
     });
   });
 });
+
+describe('Quando uma determinada sale é adicionada', () => {
+  describe('Quando uma sale é adicionada com sucesso', () => {
+    const arrayAdd = [
+      {
+        productId: 1,
+        quantity: 3
+      }
+    ];
+    const resultAdd = {id: 5, itemsSold: [...arrayAdd] };
+    const mockExecute = [{ insertId: 5 }];
+    before( async() => {
+      sinon.stub(connection, 'execute').resolves(mockExecute);
+    });
+    after( () => { connection.execute.restore(); });
+    it('Retorna um objecto', async () => {
+      const response = await saleModel.addSale(arrayAdd);
+      console.log('response', response);
+      expect(response).to.be.an('object');
+   });
+   it('O objeto retornado contém o item esperado', async () => {
+    const response = await saleModel.addSale(arrayAdd);
+    expect(response).to.be.deep.equal(resultAdd);
+ });
+  });
+  
+});
+describe('Quando uma determinada sale é editada', () => {
+  describe('Quando uma sale é editada com sucesso', () => {
+    const arrayEdit = [
+      {
+        productId: 1,
+        quantity: 3
+      }
+    ];
+    const idEdit = 5;
+    const resultEdit = {saleId: idEdit, itemUpdated: [...arrayEdit] };
+    const mockExecute = {};
+    before( async() => {
+      sinon.stub(connection, 'execute').resolves(mockExecute);
+    });
+    after( () => { connection.execute.restore(); });
+    it('Retorna um objecto', async () => {
+      const response = await saleModel.editSale(idEdit, arrayEdit);
+      console.log('response', response);
+      expect(response).to.be.an('object');
+   });
+   it('O objeto retornado contém o item editado esperado', async () => {
+    const response = await saleModel.editSale(idEdit, arrayEdit);
+    expect(response).to.be.deep.equal(resultEdit);
+ });
+  });
+  
+});
