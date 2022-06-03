@@ -119,3 +119,47 @@ describe('Ao chamar o contoller pelo addProduct', () => {
     });
   });
 });
+
+describe('Ao chamar o contoller pelo editProduct', () => {
+  describe('Quando o produto a ser editado não existe', () => {
+    const request = { params: { id: 10}, body: { name:'aaaaa', quantity:10 }};
+    const response = {};
+
+    const messageJson = { message: 'Product not found'};
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns(messageJson);
+
+      sinon.stub(productService, 'editProduct').resolves(null);
+    });
+    after(() => {
+      productService.editProduct.restore();
+    });
+    it('Retorna um objeto com os métodos "status" e "json" ao receber null', async () => {
+      await productController.editProduct(request, response);
+      expect(response.status.calledWith(404)).to.be.true;
+      expect(response.json.calledWith(messageJson)).to.be.true;
+    });
+  });
+  describe('Quando o produto se encontra cadastrado e pode ser editado', () => {
+    const request = {  params: { id: 1}, body: { name:'aaaaa', quantity:10 }};
+    const response = {};
+    const productServiceID = 1;
+
+    const messageJson = { id:productServiceID, name:'aaaaa', quantity:10 };
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns(messageJson);
+
+      sinon.stub(productService, 'editProduct').resolves([]);
+    });
+    after(() => {
+      productService.editProduct.restore();
+    });
+    it('Retorna um objeto com os métodos "status" e "json" ao receber um id', async () => {
+      await productController.editProduct(request, response);
+      expect(response.status.calledWith(200)).to.be.true;
+      expect(response.json.calledWith(messageJson)).to.be.true;
+    });
+  });
+});
