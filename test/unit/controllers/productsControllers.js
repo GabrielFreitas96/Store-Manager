@@ -75,3 +75,47 @@ describe('Ao chamar o contoller pelo getProductsById', () => {
   });
 
 });
+
+describe.only('Ao chamar o contoller pelo addProduct', () => {
+  describe('Quando o produto já se encontra cadastrado', () => {
+    const request = { body: { name:'aaaaa', quantity:10 }};
+    const response = {};
+
+    const messageJson = { message: 'Product already exists'};
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns(messageJson);
+
+      sinon.stub(productService, 'addProduct').resolves(null);
+    });
+    after(() => {
+      productService.addProduct.restore();
+    });
+    it('Retorna um objeto com os métodos "status" e "json" ao receber null', async () => {
+      await productController.addProduct(request, response);
+      expect(response.status.calledWith(409)).to.be.true;
+      expect(response.json.calledWith(messageJson)).to.be.true;
+    });
+  });
+  describe('Quando o produto não se encontra cadastrado e pode ser adicionado', () => {
+    const request = { body: { name:'aaaaa', quantity:10 }};
+    const response = {};
+    const productServiceID = 1;
+
+    const messageJson = { id: productServiceID, name:'aaaaa', quantity:10 };
+    before(() => {
+      response.status = sinon.stub().returns(response);
+      response.json = sinon.stub().returns(messageJson);
+
+      sinon.stub(productService, 'addProduct').resolves(productServiceID);
+    });
+    after(() => {
+      productService.addProduct.restore();
+    });
+    it('Retorna um objeto com os métodos "status" e "json" ao receber um id', async () => {
+      await productController.addProduct(request, response);
+      expect(response.status.calledWith(201)).to.be.true;
+      expect(response.json.calledWith(messageJson)).to.be.true;
+    });
+  });
+});
