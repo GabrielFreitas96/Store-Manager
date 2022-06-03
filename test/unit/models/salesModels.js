@@ -85,3 +85,66 @@ describe('Quando as sales não são encontrado', () => {
 
 });
 });
+
+describe('Busca as sales pelo Id', () => {
+  describe('Quando uma determinada venda é encontrada pelo ID', () => {
+    const salesId = [
+      {
+        date: "2022-06-02T19:21:14.000Z",
+        productId: 1,
+        quantity: 5,
+      },
+      {
+        date: "2022-06-02T19:21:14.000Z",
+        productId: 2,
+        quantity: 10,
+      }
+    ];
+    const salesIdSerialize = [[
+      {
+        date: "2022-06-02T19:21:14.000Z",
+        product_id: 1,
+        quantity: 5,
+      },
+      {
+        date: "2022-06-02T19:21:14.000Z",
+        product_id: 2,
+        quantity: 10,
+      }
+    ]];
+    before( async () => {
+      sinon.stub(connection, 'execute').resolves(salesIdSerialize);
+    });
+    after(() => { connection.execute.restore(); })
+    it('O retorno é um array', async () => {
+      const response = await saleModel.getById();
+      expect(response).to.be.an('array');
+      expect(response).to.be.deep.equal(salesId);
+    });
+    it('O retorno é um array que contem as chaves "date", "quantity", "productId"', async () => {
+      const response = await saleModel.getById();
+      response.forEach((item) => {
+        expect(item).to.include.all.keys('date', 'quantity', 'productId');
+      });
+    });
+
+  });
+  describe('Quando uma determinada venda não é encontrada pelo ID', () => {
+    before( async () => {
+      const resultSalesId = [[]];
+      sinon.stub(connection, 'execute').resolves(resultSalesId);
+    }); 
+    after(() => {
+      connection.execute.restore();
+    });
+  
+    it('Espera o retorno ser um array', async () => {
+      const response = await saleModel.getById();
+      expect(response).to.be.an('array');
+    });
+    it('Espera que o array esteja vazio', async () => {
+      const response = await saleModel.getById();
+      expect(response).to.be.empty;
+    });
+  });
+});
