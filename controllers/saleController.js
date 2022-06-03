@@ -27,6 +27,15 @@ const editSale = async (req, res) => {
   res.status(200).json(editSales);
 };
 
-const saleController = { getSales, getSalesById, addSale, editSale };
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+  const deletedSales = await saleService.deleteSale(+id);
+  if (!deletedSales) {
+    return res.status(404).json({ message: 'Sale not founs' });
+  }
+  res.status(204).json();
+};
+
+const saleController = { getSales, getSalesById, addSale, editSale, deleteSale };
 
 module.exports = saleController;
