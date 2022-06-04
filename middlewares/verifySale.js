@@ -1,7 +1,7 @@
 const verifySale = (req, res, next) => {
-  console.log('body', req.body);
+  // console.log('body', req.body);
   const array = req.body;
-  console.log('tamanho do array', array.length);
+  // console.log('tamanho do array', array.length);
   // const [{ productId, quantity }] = req.body;
   // console.log('No middleware de Sale productId', productId);
   // console.log('No middleware de Sale quantity', quantity);
