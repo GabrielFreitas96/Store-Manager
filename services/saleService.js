@@ -1,4 +1,5 @@
 const saleModel = require('../models/saleModel');
+const productModel = require('../models/productModel');
 
 const getAll = async () => {
   const response = await saleModel.getAll();
@@ -11,6 +12,21 @@ const getById = async (id) => {
 };
 
 const addSale = async (arrayNewSales) => {
+  const allProducts = await productModel.getAll();
+  let responseBollean = true;
+  // console.log('todos os produtos', allProducts); 
+  allProducts.forEach(({ id, quantity }) => {
+    const noQuantity = arrayNewSales
+    .some((element) => element.productId === id && element.quantity > quantity);
+    // console.log('NoQuantity', noQuantity);
+    if (noQuantity) { 
+      // console.log('entrou no if');
+      responseBollean = false; 
+    }
+  });
+  if (!responseBollean) {
+    return null;
+  }
   const response = await saleModel.addSale(arrayNewSales);
   return response;
 };
