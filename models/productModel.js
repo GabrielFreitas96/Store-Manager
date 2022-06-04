@@ -3,6 +3,7 @@ const connection = require('./connection');
 const getAll = async () => {
   const query = 'SELECT * FROM StoreManager.products';
   const [result] = await connection.execute(query);
+  // console.log(result);
   return result;
 };
 
@@ -36,7 +37,24 @@ const deleteProduct = async (id) => {
   const [result] = await connection.execute(query, [id]);
   return result;
 };
+// const getProductsQuantitys = async (arrayProducts) => {
+//   const query = 'SELECT quantity FROM StoreManager.products WHERE id=?';
+//   const arrayQuantitys = [];
+//   arrayProducts.forEach(async ({ productId }) => {
+//     const [[{ quantity }]] = await connection.execute(query, [productId]);
+//     console.log('no forEach', quantity);
+//     arrayQuantitys.push(quantity);
+//   });
+//   console.log('quantitys de products', arrayQuantitys);
+//   return arrayQuantitys;
+// };
 
-const productModel = { getAll, getById, addProduct, getByName, editProduct, deleteProduct };
+const productModel = { getAll,
+  getById,
+  addProduct,
+  getByName,
+  editProduct,
+  deleteProduct,
+ };
 
 module.exports = productModel;
